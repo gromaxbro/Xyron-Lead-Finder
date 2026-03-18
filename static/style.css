@@ -1,0 +1,164 @@
+body {
+    font-family: Inter, system-ui, Arial;
+    background: #0b0f19;
+    color: #e6edf3;
+    margin: 0;
+}
+
+.container {
+    width: 1100px;
+    margin: auto;
+    padding: 40px 0;
+}
+
+/* Title */
+
+h1 {
+    font-weight: 600;
+    font-size: 28px;
+    margin-bottom: 30px;
+    letter-spacing: -0.5px;
+}
+
+/* Search panel */
+
+.search-panel {
+    display: flex;
+    gap: 12px;
+    background: #121826;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid #1f2937;
+    margin-bottom: 28px;
+}
+
+.search-panel input {
+    flex: 1;
+    padding: 12px;
+    background: #0b0f19;
+    border: 1px solid #1f2937;
+    border-radius: 8px;
+    color: #e6edf3;
+    font-size: 14px;
+}
+
+.search-panel input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 1px #3b82f6;
+}
+
+.search-panel button {
+    background: #3b82f6;
+    border: none;
+    color: white;
+    padding: 12px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.search-panel button:hover {
+    background: #2563eb;
+}
+
+/* Stats */
+
+.stats {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.card {
+    flex: 1;
+    background: #121826;
+    border: 1px solid #1f2937;
+    padding: 18px;
+    border-radius: 12px;
+    transition: 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    border-color: #374151;
+}
+
+.card h3 {
+    font-size: 13px;
+    color: #8b949e;
+    margin: 0 0 6px 0;
+}
+
+.card p {
+    font-size: 26px;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Table */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #121826;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #1f2937;
+}
+
+thead {
+    background: #0f1625;
+}
+
+th {
+    text-align: left;
+    padding: 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #9ca3af;
+    border-bottom: 1px solid #1f2937;
+}
+
+td {
+    padding: 14px;
+    border-bottom: 1px solid #1f2937;
+    font-size: 14px;
+}
+
+tbody tr {
+    transition: 0.15s;
+}
+
+tbody tr:hover {
+    background: #0f1625;
+}
+
+/* Status */
+
+.status-ok {
+    color: #22c55e;
+    font-weight: 500;
+}
+
+.status-down {
+    color: #ef4444;
+    font-weight: 500;
+}
+
+.status-none {
+    color: #f59e0b;
+    font-weight: 500;
+}
+
+/* Links */
+
+a {
+    color: #60a5fa;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
