@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Auth</title>
+        <link rel="stylesheet" href="/static/login.css" />
+    </head>
+    <body>
+        <div class="auth-container">
+            <div class="auth-logo">
+                <img src="/static/logo.png" alt="logo" />
+            </div>
+
+            <div class="auth-header">
+                <div class="auth-title" id="title">Login</div>
+                <div class="auth-subtitle">Access your dashboard</div>
+            </div>
+
+            <div class="auth-error" id="error"></div>
+
+            <div class="input-group">
+                <input
+                    class="input"
+                    type="text"
+                    id="username"
+                    placeholder="Username"
+                />
+            </div>
+
+            <div class="input-group">
+                <input
+                    class="input"
+                    type="password"
+                    id="password"
+                    placeholder="Password"
+                />
+            </div>
+
+            <button class="auth-btn" onclick="submitForm()">Login</button>
+
+            <div class="auth-toggle" onclick="">
+                Don’t have an account? <span>Cry about it</span>
+            </div>
+        </div>
+
+        <script>
+            let isLogin = true;
+
+            async function submitForm() {
+                const username = document.getElementById("username").value;
+                const password = document.getElementById("password").value;
+
+                const url = isLogin ? "/login" : "/register";
+
+                const res = await fetch(url, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password }),
+                });
+
+                const data = await res.json();
+
+                if (data.status === "ok") {
+                    window.location.href = "/dashboard";
+                } else {
+                    document.getElementById("error").innerText =
+                        data.status === "user exists"
+                            ? "User already exists"
+                            : "Invalid credentials";
+                }
+            }
+        </script>
+    </body>
+</html>

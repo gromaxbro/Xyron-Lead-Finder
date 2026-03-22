@@ -4,38 +4,40 @@
         <title>Lead Finder</title>
 
         <link rel="stylesheet" href="/static/style.css" />
-
-        <style>
-            #loading {
-                display: none;
-                text-align: center;
-                margin-top: 30px;
-            }
-
-            .spinner {
-                border: 6px solid #eee;
-                border-top: 6px solid #3498db;
-                border-radius: 50%;
-                width: 40px;
-                height: 40px;
-                animation: spin 1s linear infinite;
-                margin: auto;
-            }
-
-            @keyframes spin {
-                0% {
-                    transform: rotate(0deg);
-                }
-                100% {
-                    transform: rotate(360deg);
-                }
-            }
-        </style>
     </head>
 
     <body>
-        <div class="container">
-            <h1>Lead Finder Dashboard</h1>
+        <div class="layout">
+
+            <!-- SIDEBAR -->
+            <aside class="sidebar">
+                <div class="sidebar-top">
+                    <img src="/static/logo.png" class="logo-img" />
+                    <span class="brand">LeadFinder</span>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <a href="/dashboard" class="active">Dashboard</a>
+                    <a href="/leads">Leads</a>
+                    <a>Analytics</a>
+                    <a href="/logout">Logout</a>
+                </nav>
+            </aside>
+
+            <!-- MAIN CONTENT -->
+            <div class="main">
+                <!-- keep your navbar (only right side stuff now) -->
+                <nav class="navbar">
+                    <div></div>
+
+                    <div class="nav-right">
+                        <button class="nav-btn">Upgrade</button>
+                        <div class="profile"><span>K</span></div>
+                    </div>
+                </nav>
+
+                <!-- your existing container -->
+                <div class="container">
 
             <form id="searchForm">
                 <div class="search-panel">
@@ -51,6 +53,8 @@
                         required
                     />
                     <select name="limit" id="limit">
+                        <option value="5">5 Leads</option>
+                        <option value="20">20 Leads</option>
                         <option value="40">40 Leads</option>
                         <option value="80">80 Leads</option>
                         <option value="120">120 Leads</option>
@@ -58,12 +62,6 @@
                     <button type="submit">Search</button>
                 </div>
             </form>
-
-            <div id="loading">
-                <h3>Extracting leads... please wait</h3>
-
-                <div class="spinner"></div>
-            </div>
 
             <div id="results">
                 <div class="stats">
@@ -83,90 +81,58 @@
                     </div>
                 </div>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Phone</th>
-                            <th>Website</th>
-                            <th>Status</th>
-                            <th>Reviews</th>
-                            <th>Loading Speed</th>
-                        </tr>
-                    </thead>
+                <!-- 🔥 ADD THIS WRAPPER -->
+                <div class="table-wrapper">
 
-                    <tbody id="tableBody"></tbody>
-                </table>
+                    <!-- 🔥 BUTTON GOES HERE -->
+
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Select</th>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Emails</th>
+                                <th>Website</th>
+                                <th>Status</th>
+                                <th>Reviews</th>
+                                <th>Loading Speed</th>
+                                <th>Socials</th>
+                                <th>Address</th>
+                                <th>Score</th>
+                                <th>Tags</th>
+                                <th>AI Insight</th>
+                                <th style="text-align:right;">
+                                        <button id="saveLeads" disabled>💾 Save</button>
+                                    </th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="tableBody"></tbody>
+                    </table>
+
+                    <!-- ✅ BUTTON AT BOTTOM -->
+
+
+                </div>
+            </div>
+
+        </div>
+        <div id="loadingOverlay">
+            <div class="loading-box">
+                <div class="spinner"></div>
+                <p id="loadingText">Extracting leads...</p>
+
+                <!-- Progress Bar -->
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+
+                <p id="progressPercent">0%</p>
             </div>
         </div>
+        <script src="/static/main.js"></script>
 
-        <script>
-            document
-                .getElementById("searchForm")
-                .addEventListener("submit", async function (e) {
-                    e.preventDefault();
-
-                    let type = document.querySelector("[name='type']").value;
-                    let region =
-                        document.querySelector("[name='region']").value;
-                    let limit = document.getElementById("limit").value;
-                    document.getElementById("loading").style.display = "block";
-
-                    let response = await fetch("/extract", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            type: type,
-                            region: region,
-                            limit:limit,
-                        }),
-                    });
-
-                    let leads = await response.json();
-
-                    document.getElementById("loading").style.display = "none";
-
-                    let table = document.getElementById("tableBody");
-
-                    table.innerHTML = "";
-
-                    let down = 0;
-                    let none = 0;
-
-                    leads.forEach((l) => {
-                        if (l.status == "down") down++;
-                        if (l.status == "none") none++;
-
-                        let website = l.website
-                            ? `<a href="${l.website}" target="_blank">Visit</a>`
-                            : "None";
-
-                        table.innerHTML += `
-
-<tr>
-
-<td>${l.name}</td>
-
-<td>${l.phone}</td>
-
-<td>${website}</td>
-
-<td class="status-${l.status}">${l.status}</td>
-
-<td>${l.reviews}</td
->
-<td>${l.speed ?? "N/A"}</td>
-</tr>
-
-`;
-                    });
-
-                    document.getElementById("total").innerText = leads.length;
-                    document.getElementById("down").innerText = down;
-                    document.getElementById("none").innerText = none;
-                });
-        </script>
     </body>
 </html>
