@@ -63,6 +63,16 @@ lead-finder/
 - reviews
 - A score + insight is generated to prioritize leads
 
+## Pages & Routes
+
+| Page Name     | Route          | Description                          |
+|---------------|---------------|--------------------------------------|
+| Login Page    | `/login-page` | User authentication page             |
+| Dashboard     | `/dashboard`  | View and manage extracted leads      |
+| Logout     | `/logout`  | View and manage extracted leads      |
+| Extract API   | `/extract`    | Start lead extraction (POST)         |
+| Progress API  | `/progress`   | Get scraping progress                |
+| AI Insight    | `/ai-insight` | Generate AI-based lead insight       |
 
 
 ▶️ Getting Started
