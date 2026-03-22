@@ -10,37 +10,38 @@ Lead Finder helps you quickly identify businesses in a specific niche and locati
 Instead of manually checking each business, this tool highlights which ones are worth contacting.
 
 ## Features
-🔎 Search businesses by niche + location
-📞 Extract phone numbers
-📧 Extract emails from websites
-🌐 Detect website availability & loading speed
-📱 Identify social media presence
-⭐ Collect ratings & reviews
-📍 Extract business address
-🧠 Lead scoring system (based on opportunity signals)
-🤖 AI-generated insights (optional, on demand)
+
+- 🔍 Search businesses by niche + location  
+- 📞 Extract phone numbers  
+- 💬 Extract emails from websites  
+- 🌐 Detect website availability & loading speed  
+- 📊 Identify social media presence  
+- ⭐ Collect ratings & reviews  
+- 📍 Extract business address  
+- 🧠 Lead scoring system  
+- 🤖 AI-generated insights (optional)
 
 ## Example Insights
-High rating but no website → strong opportunity
-No Instagram presence → weak online visibility
-Website + social active → lower priority lead
+- High rating but no website → strong opportunity
+- No Instagram presence → weak online visibility
+- Website + social active → lower priority lead
 
 ## Tech Stack
-Backend: Python, Flask
-Scraping: Playwright
-HTTP Requests: requests
-Frontend: HTML, CSS, JavaScript
-AI (optional): Hugging Face / LLM API
+- Backend: Python, Flask
+- Scraping: Playwright
+- HTTP Requests: requests
+- Frontend: HTML, CSS, JavaScript
+- AI (optional): Hugging Face / LLM API
 
 
 ## How It Works
 1. Enter a business type and location
 2. The scraper collects relevant businesses
 3 . Each lead is analyzed:
-website status
-social presence
-reviews
-A score + insight is generated to prioritize leads
+- website status
+- social presence
+- reviews
+- A score + insight is generated to prioritize leads
 
 
 
@@ -56,8 +57,10 @@ API_URL = "https://router.huggingface.co/v1/chat/completions"
 API_KEY = ""
 ```
 4. Run the app
-``python app.py``
-5. Open in browser
+```
+python app.py
+```
+6. Open in browser
 ``http://127.0.0.1:5000``
 
 
