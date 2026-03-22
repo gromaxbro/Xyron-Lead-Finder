@@ -53,16 +53,6 @@ lead-finder/
 - Frontend: HTML, CSS, JavaScript
 - AI (optional): Hugging Face / LLM API
 
-
-## How It Works
-1. Enter a business type and location
-2. The scraper collects relevant businesses
-3 . Each lead is analyzed:
-- website status
-- social presence
-- reviews
-- A score + insight is generated to prioritize leads
-
 ## Pages & Routes
 
 | Page Name     | Route          | Description                          |
@@ -73,6 +63,17 @@ lead-finder/
 | Extract API   | `/extract`    | Start lead extraction (POST)         |
 | Progress API  | `/progress`   | Get scraping progress                |
 | AI Insight    | `/ai-insight` | Generate AI-based lead insight       |
+
+
+## How It Works
+1. Enter a business type and location
+2. The scraper collects relevant businesses
+3 . Each lead is analyzed:
+- website status
+- social presence
+- reviews
+- A score + insight is generated to prioritize leads
+
 
 
 ▶️ Getting Started
