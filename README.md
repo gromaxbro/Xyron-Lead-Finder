@@ -3,8 +3,6 @@ Xyron is a lead finder tool where it uses google map to scrape details about loc
 you can use this tool for cold calling or finding broken websites to fix or reach.
 
 <img width="1917" height="1079" alt="Screenshot 2026-03-22 140155" src="https://github.com/user-attachments/assets/4934445e-d708-4003-b287-f6eddf08e5a8" />
-<br>
-<img width="1919" height="903" alt="Screenshot 2026-03-19 231053" src="https://github.com/user-attachments/assets/5a25642a-408b-46f3-90eb-22e0bdb55d8a" />
 
 
 ## Overview
@@ -23,24 +21,6 @@ Instead of manually checking each business, this tool highlights which ones are 
 - 🧠 Lead scoring system  
 - 🤖 AI-generated insights (optional)
 
-## File structure
-
-```
-lead-finder/
-│
-├── app.py
-├── main.py
-├── requirements.txt
-├── README.md
-├── .gitignore
-│
-├── templates/
-│   └── index.html
-│
-├── static/
-│   ├── style.css
-│   └── leads.js
-```
 
 ## Example Insights
 - High rating but no website → strong opportunity
