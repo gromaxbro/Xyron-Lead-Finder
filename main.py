@@ -8,9 +8,8 @@ from playwright.sync_api import sync_playwright
 # progress = 0
 progress_store = {}
 
-
-def get_progress():
-    return progress
+API_URL = "https://router.huggingface.co/v1/chat/completions"
+API_KEY = ""
 
 
 EMAIL_REGEX = r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
@@ -45,9 +44,8 @@ def clean_emails(emails):
     return list(set(clean))
 
 
-API_URL = "https://router.huggingface.co/v1/chat/completions"
 HEADERS = {
-    "Authorization": "Bearer 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",
+    "Authorization": f"Bearer {API_KEY}",
     "Content-Type": "application/json",
 }
 
