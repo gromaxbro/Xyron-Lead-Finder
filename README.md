@@ -21,6 +21,25 @@ Instead of manually checking each business, this tool highlights which ones are 
 - 🧠 Lead scoring system  
 - 🤖 AI-generated insights (optional)
 
+## File structure
+
+```
+lead-finder/
+│
+├── app.py
+├── main.py
+├── requirements.txt
+├── README.md
+├── .gitignore
+│
+├── templates/
+│   └── index.html
+│
+├── static/
+│   ├── style.css
+│   └── leads.js
+```
+
 ## Example Insights
 - High rating but no website → strong opportunity
 - No Instagram presence → weak online visibility
@@ -47,11 +66,15 @@ Instead of manually checking each business, this tool highlights which ones are 
 
 ▶️ Getting Started
 1. Clone the repository
-`` git clone https://github.com/your-username/lead-finder.git``
-``cd lead-finder``
-2. Install dependencies
-``pip install -r requirements.txt``
-4. Change the API KEY(Hugging Face) in the `main.py`
+```
+ git clone https://github.com/your-username/lead-finder.git
+cd lead-finder
+```
+3. Install dependencies
+```
+pip install -r requirements.txt
+```
+5. Change the API KEY(Hugging Face) in the `main.py`
 ```
 API_URL = "https://router.huggingface.co/v1/chat/completions"
 API_KEY = ""
@@ -61,15 +84,20 @@ API_KEY = ""
 python app.py
 ```
 6. Open in browser
-``http://127.0.0.1:5000``
+```
+http://127.0.0.1:5000
+```
 
+## usage
 
-⚠️ Disclaimer
-This is an experimental side project
-Scraped data may not always be fully accurate
+ - Use `app.py` for the main side
+- and `register.py` to register new user
+ 
+## ⚠️ Disclaimer
+This is an experimental side project Scraped data may not always be fully accurate
 Use responsibly and respect website terms of service
 
 
-📬 Feedback
+## 📬 Feedback
 If you have suggestions or ideas, feel free to share — always looking to improve.
 
