@@ -1,4 +1,4 @@
-<img width="1917" height="1079" alt="Screenshot 2026-03-22 140155" src="https://github.com/user-attachments/assets/2de4a071-6163-4458-8b6e-096e0c24b0b8" /># Xyron Lead Finder Tool
+# Xyron Lead Finder Tool
 Xyron is a lead finder tool where it uses google map to scrape details about local shops and store. and analyze their online presence for outreach opportunities.
 you can use tihs tool for cold calling or finding broken websites to fix or reach.
 
