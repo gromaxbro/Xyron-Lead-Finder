@@ -7,7 +7,6 @@
 
     <body>
         <div class="layout">
-            <!-- SIDEBAR -->
             <aside class="sidebar">
                 <div class="sidebar-top">
                     <img src="/static/logo.png" class="logo-img" />
@@ -20,89 +19,100 @@
                     <a href="/logout">Logout</a>
                 </nav>
             </aside>
-            <!-- MAIN -->
+
             <div class="main">
                 <div class="topbar">
-                    <h2>Saved Leads</h2>
-                    <button id="clearBtn">Clear All</button>
+                    <div>
+                        <span class="eyebrow">Execution Queue</span>
+                        <h2>Saved Leads</h2>
+                    </div>
+
+                    <button id="clearBtn" type="button">Clear All</button>
                 </div>
 
                 <div id="results">
-                    <!-- 🔥 ADD THIS WRAPPER -->
-                    <div class="table-wrapper">
-                        <!-- 🔥 BUTTON GOES HERE -->
+                    <div class="control-bar">
+                        <input id="savedSearch" type="text" placeholder="Search saved leads..." />
+                        <button id="copyEmailsBtn" type="button" class="secondary-btn">Copy All Emails</button>
+                        <button id="copyPhonesBtn" type="button" class="secondary-btn">Copy All Phones</button>
+                        <button id="exportSavedCsvBtn" type="button" class="secondary-btn">Export CSV</button>
+                    </div>
 
+                    <div class="table-meta">
+                        <div id="savedResultsCount">{{ myleads|length }} leads</div>
+                        <div id="copyFeedback"></div>
+                    </div>
+
+                    <div class="table-wrapper">
                         <table>
                             <thead>
                                 <tr>
                                     <th>Name</th>
                                     <th>Phone</th>
+                                    <th>Emails</th>
                                     <th>Website</th>
-                                    <th>Status</th>
-                                    <th>Reviews</th>
                                     <th>Social</th>
+                                    <th>Address</th>
                                 </tr>
                             </thead>
 
                             <tbody id="tableBody">
                                 {% for item in myleads %}
-
                                 <tr>
-                                    <td>{{item.name}}</td>
-
-                                    <td>{{item.phone}}</td>
-
-                                    <td>{{item.website}}</td>
-
-                                    <td class="status-{{item.status}}">
-                                        {{item.status}}
-                                    </td>
-
-                                    <td>{{item.reviews}}</td>
+                                    <td>{{ item.name or "-" }}</td>
+                                    <td>{{ item.phone or "-" }}</td>
                                     <td>
-                                        {% if item.social %} {% if
-                                        item.social.instagram %}
-                                        <a
-                                            href="{{ item.social.instagram }}"
-                                            target="_blank"
-                                            class="social-btn ig"
-                                        >
-                                            📷 Instagram
-                                        </a>
-                                        {% endif %} {% if item.social.facebook
-                                        %}
-                                        <a
-                                            href="{{ item.social.facebook }}"
-                                            target="_blank"
-                                            class="social-btn fb"
-                                        >
-                                            👍 Facebook
-                                        </a>
-                                        {% endif %} {% if item.social.whatsapp
-                                        %}
-                                        <a
-                                            href="{{ item.social.whatsapp }}"
-                                            target="_blank"
-                                            class="social-btn wa"
-                                        >
-                                            💬 WhatsApp
-                                        </a>
-                                        {% endif %} {% if not
-                                        item.social.instagram and not
-                                        item.social.facebook and not
-                                        item.social.whatsapp %}
-                                        <span class="no-social">⚫ None</span>
-                                        {% endif %} {% else %}
-                                        <span class="no-social">⚫ None</span>
+                                        {% if item.emails %}
+                                            {% if item.emails is string %}
+                                                {{ item.emails }}
+                                            {% else %}
+                                                {{ item.emails|join(", ") }}
+                                            {% endif %}
+                                        {% else %}
+                                            -
                                         {% endif %}
                                     </td>
-                                </tr>
+                                    <td>
+                                        {% if item.website %}
+                                        <a href="{{ item.website }}" target="_blank">🌐 Visit</a>
+                                        {% else %}
+                                        ❌
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% set social = item.social or {} %}
 
+                                        {% if social.instagram %}
+                                        <a href="{{ social.instagram }}" target="_blank" class="social-btn ig">📷</a>
+                                        {% endif %}
+
+                                        {% if social.facebook %}
+                                        <a href="{{ social.facebook }}" target="_blank" class="social-btn fb">f</a>
+                                        {% endif %}
+
+                                        {% if social.whatsapp %}
+                                        <a href="{{ social.whatsapp }}" target="_blank" class="social-btn wa">💬</a>
+                                        {% endif %}
+
+                                        {% if not social.instagram and not social.facebook and not social.whatsapp %}
+                                        <span class="no-social">❌</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="address-cell" title="{{ item.address or '-' }}">
+                                        {{ item.address or "-" }}
+                                    </td>
+                                </tr>
                                 {% endfor %}
+
+                                {% if not myleads %}
+                                <tr>
+                                    <td colspan="6" style="text-align:center; padding:20px;">
+                                        No saved leads yet
+                                    </td>
+                                </tr>
+                                {% endif %}
                             </tbody>
                         </table>
-
-                        <!-- ✅ BUTTON AT BOTTOM -->
                     </div>
                 </div>
             </div>

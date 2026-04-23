@@ -9,7 +9,6 @@ from flask import (
     render_template,
     request,
     session,
-    url_for,
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -18,7 +17,11 @@ from main import ai_insights, data_extractor, progress_store
 app = Flask(__name__)
 app.secret_key = "wasfmegginsiangeindv"
 
+PERMANENT_USERNAME = "heavenly"
+PERMANENT_PASSWORD = "nothing"
 
+
+# ================= DATABASE =================
 def get_db():
     if "db" not in g:
         g.db = sqlite3.connect("database.db")
@@ -36,7 +39,6 @@ def close_db(error):
 def init_db():
     db = get_db()
 
-    # 👤 users table
     db.execute("""
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -45,7 +47,6 @@ def init_db():
         )
     """)
 
-    # 📊 leads table (linked to user)
     db.execute("""
         CREATE TABLE IF NOT EXISTS leads (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -59,12 +60,26 @@ def init_db():
     db.commit()
 
 
+def seed_permanent_user():
+    db = get_db()
+    hashed_password = generate_password_hash(PERMANENT_PASSWORD)
+
+    db.execute("DELETE FROM users")
+    db.execute(
+        "INSERT INTO users (username, password) VALUES (?, ?)",
+        (PERMANENT_USERNAME, hashed_password),
+    )
+    db.commit()
+
+
 with app.app_context():
     init_db()
+    seed_permanent_user()
 
 
+# ================= AUTH =================
 def require_login():
-    return "user_id" in session  # send back to login
+    return "user_id" in session
 
 
 @app.route("/login", methods=["POST"])
@@ -75,7 +90,9 @@ def login_method():
 
     db = get_db()
 
-    user = db.execute("SELECT * FROM users WHERE username=?", (username,)).fetchone()
+    user = db.execute(
+        "SELECT * FROM users WHERE username=?", (username,)
+    ).fetchone()
 
     if user and check_password_hash(user["password"], password):
         session["user_id"] = user["id"]
@@ -84,51 +101,31 @@ def login_method():
     return {"status": "invalid"}
 
 
+@app.route("/login-page")
+def login():
+    return render_template("login.html")
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/login-page")
+
+
+# ================= MAIN ROUTES =================
+
+# 🔥 FIX: root route (this was missing → caused 404)
+@app.route("/")
+def root():
+    return redirect("/dashboard")
+
+
 @app.route("/dashboard")
 def home():
     if not require_login():
         return redirect("/login-page")
 
     return render_template("index.html")
-
-
-@app.route("/example")
-def example():
-    return "yes bro"
-
-
-@app.route("/add-leads", methods=["POST"])
-def add_jeans():
-    if not require_login():
-        return redirect("/login-page")
-
-    dataa = request.json
-    db = get_db()
-
-    for lead in dataa:
-        db.execute("INSERT INTO leads (data) VALUES (?)", (json.dumps(lead),))
-
-    db.commit()
-
-    print("saved")
-    return jsonify(["ok"]), 200
-
-
-@app.route("/clear-leads")
-def rem_jeans():
-    if not require_login():
-        return jsonify({"error": "not logged in"}), 401
-
-    db = get_db()
-    db.execute("DELETE FROM leads WHERE user_id=?", (session["user_id"],))
-    db.commit()
-
-    return jsonify(["ok"])
-
-
-@app.route("/login-page")
-def login():
-    return render_template("login.html")
 
 
 @app.route("/leads")
@@ -144,38 +141,71 @@ def jeads():
     return render_template("leads.html", myleads=leads)
 
 
-@app.route("/progress/<task_id>")
-def progress(task_id):
-    return str(progress_store.get(task_id, 0))
+# ================= LEADS =================
+@app.route("/add-leads", methods=["POST"])
+def add_leads():
+    if not require_login():
+        return jsonify({"error": "not logged in"}), 401
+
+    dataa = request.json
+    db = get_db()
+
+    for lead in dataa:
+        db.execute(
+            "INSERT INTO leads (user_id, data) VALUES (?, ?)",
+            (session["user_id"], json.dumps(lead)),
+        )
+
+    db.commit()
+    return jsonify(["ok"]), 200
 
 
+@app.route("/clear-leads")
+def clear_leads():
+    if not require_login():
+        return jsonify({"error": "not logged in"}), 401
+
+    db = get_db()
+    db.execute("DELETE FROM leads WHERE user_id=?", (session["user_id"],))
+    db.commit()
+
+    return jsonify(["ok"])
+
+
+# ================= SCRAPER =================
 @app.route("/extract", methods=["POST"])
 def extract():
-
     data = request.json
+
     business_type = data["type"]
     region = data["region"]
     limit = data["limit"]
     taskid = data["task_id"]
+
     leads = data_extractor(business_type, region, limit, taskid)
 
     return jsonify(leads)
 
 
-@app.route("/logout")
-def logout():
-    session.clear()  # removes user_id and all session data
-    return redirect("/login-page")
+@app.route("/progress/<task_id>")
+def progress(task_id):
+    return str(progress_store.get(task_id, 0))
 
 
+# ================= AI =================
 @app.route("/ai-insight", methods=["POST"])
 def ai_insight():
     lead = request.json
 
-    insight = ai_insights(lead)  # your function
+    try:
+        insight = ai_insights(lead)
+    except Exception as e:
+        print("AI ERROR:", e)
+        insight = "No insight"
 
     return {"insight": insight}
 
 
+# ================= RUN =================
 if __name__ == "__main__":
     app.run(debug=True)
